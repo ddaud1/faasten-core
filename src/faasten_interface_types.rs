@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 DENT OPEN
 *************************************************/
 
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct DentOpen {
     pub fd: u64,
     pub entry: Option<dent_open::Entry>
@@ -16,7 +16,7 @@ pub struct DentOpen {
 
 
 pub mod dent_open {
-    #[derive(serde::Deserialize, serde::Serialize)]
+    #[derive(serde::Deserialize, serde::Serialize, Debug)]
         pub enum Entry {
         Name(String),
         Facet(super::Buckle)
@@ -66,14 +66,14 @@ impl Into<i32> for DentKind {
 DENT CREATE
 *************************************************/
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct DentCreate {
     pub label: Option<Buckle>,
     pub kind: Option<dent_create::Kind>
 }
 
 pub mod dent_create {
-    #[derive(super::Serialize, super::Deserialize)]
+    #[derive(super::Serialize, super::Deserialize, Debug)]
     pub enum Kind {
         Directory,
         File,
@@ -88,20 +88,20 @@ pub mod dent_create {
 GATES
 *************************************************/
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Gate {
     pub kind: Option<gate::Kind>
 }
 
 pub mod gate {
-    #[derive(super::Serialize, super::Deserialize)]
+    #[derive(super::Serialize, super::Deserialize, Debug)]
     pub enum Kind {
         Direct(super::DirectGate),
         Redirect(super::RedirectGate)
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct DirectGate {
     pub privilege: Option<Component>,
     pub invoker_integrity_clearance: Option<Component>,
@@ -109,7 +109,7 @@ pub struct DirectGate {
     pub declassify: Option<Component>
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct RedirectGate {
     pub privilege: Option<Component>,
     pub invoker_integrity_clearance: Option<Component>,
@@ -117,7 +117,7 @@ pub struct RedirectGate {
     pub declassify: Option<Component>
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Service {
     pub privilege: Option<Component>,
     pub invoker_integrity_clearance: Option<Component>,
@@ -131,14 +131,14 @@ pub struct Service {
 /*************************************************
 RESULTS
 *************************************************/
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct DentResult {
     pub success: bool,
     pub fd: Option<u64>,
     pub data: Option<Vec<u8>>
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct DentOpenResult {
     pub success: bool,
     pub fd: u64,
