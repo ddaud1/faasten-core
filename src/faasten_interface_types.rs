@@ -1,5 +1,3 @@
-use crate::fs::Function;
-
 use super::fs::DirEntry;
 use labeled::buckle::{Buckle, Component};
 use serde::{Deserialize, Serialize};
@@ -85,6 +83,24 @@ pub mod dent_create {
 }
 
 /*************************************************
+DENT UPDATE
+*************************************************/
+#[derive(Serialize, Deserialize, Debug)]
+pub struct DentUpdate {
+    pub fd: u64,
+    pub kind: Option<dent_update::Kind>
+}
+
+pub mod dent_update {
+    #[derive(super::Serialize, super::Deserialize, Debug)]
+    pub enum Kind {
+        File(Vec<u8>),
+        Gate(super::Gate),
+        Service(super::Service),
+        Blob(u64)
+    }
+}
+/*************************************************
 GATES
 *************************************************/
 
@@ -127,6 +143,17 @@ pub struct Service {
     pub headers: std::collections::HashMap<String, String>
 }
 
+/*************************************************
+FUNCTION
+*************************************************/
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Function {
+    pub memory: u64,
+    pub app_image: u64,
+    pub runtime: u64,
+    pub kernel: u64
+}
 
 /*************************************************
 RESULTS
