@@ -1,6 +1,12 @@
+use crate::fs::Function;
+
 use super::fs::DirEntry;
-use labeled::buckle::Buckle;
+use labeled::buckle::{Buckle, Component};
 use serde::{Deserialize, Serialize};
+
+/*************************************************
+DENT OPEN
+*************************************************/
 
 #[derive(serde::Deserialize, serde::Serialize)]
 pub struct DentOpen {
@@ -16,6 +22,10 @@ pub mod dent_open {
         Facet(super::Buckle)
     }
 }
+
+/*************************************************
+DENT KIND
+*************************************************/
 
 pub enum DentKind {
     DentDirectory = 0,
@@ -52,19 +62,9 @@ impl Into<i32> for DentKind {
     }
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct DentOpenResult {
-    pub success: bool,
-    pub fd: u64,
-    pub kind: i32
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct DentResult {
-    pub success: bool,
-    pub fd: Option<u64>,
-    pub data: Option<Vec<u8>>
-}
+/*************************************************
+DENT CREATE
+*************************************************/
 
 #[derive(Serialize, Deserialize)]
 pub struct DentCreate {
@@ -79,10 +79,14 @@ pub mod dent_create {
         File,
         FacetedDirectory,
         Gate(super::Gate),
-        Service, // incomplete
+        Service(super::Service),
         Blob
     }
 }
+
+/*************************************************
+GATES
+*************************************************/
 
 #[derive(Serialize, Deserialize)]
 pub struct Gate {
@@ -90,10 +94,53 @@ pub struct Gate {
 }
 
 pub mod gate {
-    //incomplete 
     #[derive(super::Serialize, super::Deserialize)]
     pub enum Kind {
-        Direct,
-        Redirect
+        Direct(super::DirectGate),
+        Redirect(super::RedirectGate)
     }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct DirectGate {
+    pub privilege: Option<Component>,
+    pub invoker_integrity_clearance: Option<Component>,
+    pub function: Option<Function>,
+    pub declassify: Option<Component>
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct RedirectGate {
+    pub privilege: Option<Component>,
+    pub invoker_integrity_clearance: Option<Component>,
+    pub gate: u64,
+    pub declassify: Option<Component>
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Service {
+    pub privilege: Option<Component>,
+    pub invoker_integrity_clearance: Option<Component>,
+    pub taint: Option<Buckle>,
+    pub url: String,
+    pub verb: i32,
+    pub headers: std::collections::HashMap<String, String>
+}
+
+
+/*************************************************
+RESULTS
+*************************************************/
+#[derive(Serialize, Deserialize)]
+pub struct DentResult {
+    pub success: bool,
+    pub fd: Option<u64>,
+    pub data: Option<Vec<u8>>
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct DentOpenResult {
+    pub success: bool,
+    pub fd: u64,
+    pub kind: i32
 }
