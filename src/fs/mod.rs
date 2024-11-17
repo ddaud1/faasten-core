@@ -18,8 +18,8 @@ pub use function::*;
 
 use self::path::{Path, PathComponent};
 
-thread_local!(pub(crate) static CURRENT_LABEL: RefCell<Buckle> = RefCell::new(Buckle::public()));
-thread_local!(pub(crate) static PRIVILEGE: RefCell<Component> = RefCell::new(Component::dc_true()));
+thread_local!(pub static CURRENT_LABEL: RefCell<Buckle> = RefCell::new(Buckle::public()));
+thread_local!(pub static PRIVILEGE: RefCell<Component> = RefCell::new(Component::dc_true()));
 
 pub const ROOT_REF: ObjectRef<Labeled<Directory>> = ObjectRef::new(0);
 
