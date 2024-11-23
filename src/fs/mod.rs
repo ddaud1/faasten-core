@@ -56,6 +56,19 @@ impl From<reqwest::Method> for HttpVerb {
     }
 }
 
+impl HttpVerb {
+    pub fn from_i32(val: i32) -> Option<Self> {
+        match val {
+            0 => Some(HttpVerb::HEAD),
+            1 => Some(HttpVerb::GET),
+            2 => Some(HttpVerb::POST),
+            3 => Some(HttpVerb::PUT),
+            4 => Some(HttpVerb::DELETE),
+            _ => None
+        }
+    }
+}
+
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ObjectRef<T> {
