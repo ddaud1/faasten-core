@@ -313,7 +313,7 @@ pub struct Service {
     pub invoker_integrity_clearance: Component,
     pub taint: Buckle,
     pub url: String,
-    // pub verb: HttpVerb,
+    pub verb: HttpVerb,
     pub headers: BTreeMap<String, String>,
 }
 
