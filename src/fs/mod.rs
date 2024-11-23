@@ -23,38 +23,38 @@ thread_local!(pub static PRIVILEGE: RefCell<Component> = RefCell::new(Component:
 
 pub const ROOT_REF: ObjectRef<Labeled<Directory>> = ObjectRef::new(0);
 
-// #[derive(Debug, Clone, Serialize, Deserialize)]
-// pub enum HttpVerb {
-//     HEAD,
-//     GET,
-//     POST,
-//     PUT,
-//     DELETE,
-// }
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum HttpVerb {
+    HEAD,
+    GET,
+    POST,
+    PUT,
+    DELETE,
+}
 
-// impl From<HttpVerb> for reqwest::Method {
-//     fn from(verb: HttpVerb) -> Self {
-//         match verb {
-//             HttpVerb::HEAD => reqwest::Method::HEAD,
-//             HttpVerb::GET => reqwest::Method::GET,
-//             HttpVerb::POST => reqwest::Method::POST,
-//             HttpVerb::PUT => reqwest::Method::PUT,
-//             HttpVerb::DELETE => reqwest::Method::DELETE,
-//         }
-//     }
-// }
+impl From<HttpVerb> for reqwest::Method {
+    fn from(verb: HttpVerb) -> Self {
+        match verb {
+            HttpVerb::HEAD => reqwest::Method::HEAD,
+            HttpVerb::GET => reqwest::Method::GET,
+            HttpVerb::POST => reqwest::Method::POST,
+            HttpVerb::PUT => reqwest::Method::PUT,
+            HttpVerb::DELETE => reqwest::Method::DELETE,
+        }
+    }
+}
 
-// impl From<reqwest::Method> for HttpVerb {
-//     fn from(method: reqwest::Method) -> Self {
-//         match method {
-//             reqwest::Method::GET => HttpVerb::GET,
-//             reqwest::Method::POST => HttpVerb::POST,
-//             reqwest::Method::PUT => HttpVerb::PUT,
-//             reqwest::Method::DELETE => HttpVerb::DELETE,
-//             _ => panic!("Request method {} not supported", method),
-//         }
-//     }
-// }
+impl From<reqwest::Method> for HttpVerb {
+    fn from(method: reqwest::Method) -> Self {
+        match method {
+            reqwest::Method::GET => HttpVerb::GET,
+            reqwest::Method::POST => HttpVerb::POST,
+            reqwest::Method::PUT => HttpVerb::PUT,
+            reqwest::Method::DELETE => HttpVerb::DELETE,
+            _ => panic!("Request method {} not supported", method),
+        }
+    }
+}
 
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
