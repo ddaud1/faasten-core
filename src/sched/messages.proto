@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+package faasten_core.sched.message;
+
+//import "syscalls.proto";
+
+message Void {}
+
+message FunctionResponse {
+  optional bytes body = 1;
+  uint32 statusCode = 2;
+}
+
+message Buckle {
+  // None means DcFalse, empty clauses means DcTrue, otherwise DcFormula
+  Component secrecy = 1;
+  // None means DcFalse, empty clauses means DcTrue, otherwise DcFormula
+  Component integrity = 2;
+}
+
+message TokenList {
+  repeated string tokens = 1;
+}
+
+message Clause {
+  // A disjuction of principals
+  repeated TokenList principals = 1;
+}
+
+message ClauseList {
+  repeated Clause clauses = 1;
+}
+
+message Component {
+  oneof component {
+    Void DCFalse = 1;
+    // A conjunction of clauses
+    ClauseList clauses = 2;
+  }
+}
+
+// Begin of request messages
+message GetTask {
+    uint64 threadId = 1;
+}
+
+message FinishTask {
+    string taskId = 1;
+    TaskReturn result = 2;
+}
+
+message Function {
+  uint64 memory = 1;
+  string appImage = 2;
+  string runtime = 3;
+  string kernel = 4;
+}
+
+message LabeledInvoke {
+    Function             function         = 1;
+    Buckle      label            = 2;
+    Component   gatePrivilege    = 3;
+    bytes                payload          = 4;
+    map <string, string> blobs            = 5;
+    map <string, string> headers          = 6;
+    bool                 sync             = 7;
+    Component   invoker          = 8;
+}
+
+message UpdateResource {
+    bytes info = 1;
+}
+
+message DropResource {}
+message TerminateAll {}
+// End of request messages
+
+// Begin of response messages
+message ProcessTask {
+    string        taskId        = 1;
+    LabeledInvoke labeledInvoke = 2;
+}
+
+message Terminate {}
+message Fail {}
+message Ping {}
+message Pong {}
+// End of response messages
+
+message Request {
+    oneof kind {
+        // Worker
+        GetTask        getTask        = 1;
+        FinishTask     finishTask     = 2;
+        LabeledInvoke  labeledInvoke  = 3;
+        // Local resource manager
+        UpdateResource updateResource = 4;
+        DropResource   dropResource   = 5;
+        // Debug
+        TerminateAll   terminateAll   = 6;
+        Ping           ping           = 7;
+    }
+}
+
+message Response {
+    oneof kind {
+        // Worker
+        ProcessTask processTask = 1;
+        Terminate   terminate   = 2;
+        // Debug
+        Fail        fail        = 3;
+        TaskReturn  success     = 4;
+        Pong        pong        = 5;
+    }
+}
+
+enum ReturnCode {
+    ResourceExhausted = 0;
+    LaunchFailed = 1;
+    ProcessRequestFailed = 2;
+    GateNotExist = 3;
+    Success = 4;
+    QueueFull = 5;
+}
+
+message TaskReturn {
+    ReturnCode code = 1;
+    FunctionResponse payload = 2;
+    Buckle label = 3;
+}
