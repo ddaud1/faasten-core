@@ -23,24 +23,24 @@ impl From<FunctionConfig> for Function {
     }
 }
 
-// impl From<crate::sched::message::Function> for Function {
-//     fn from(pbf: crate::sched::message::Function) -> Self {
-//         Self {
-//             memory: pbf.memory as usize,
-//             app_image: pbf.app_image,
-//             runtime_image: pbf.runtime,
-//             kernel: pbf.kernel,
-//         }
-//     }
-// }
+impl From<crate::sched::message::Function> for Function {
+    fn from(pbf: crate::sched::message::Function) -> Self {
+        Self {
+            memory: pbf.memory as usize,
+            app_image: pbf.app_image,
+            runtime_image: pbf.runtime,
+            kernel: pbf.kernel,
+        }
+    }
+}
 
-// impl From<Function> for crate::sched::message::Function {
-//     fn from(f: Function) -> Self {
-//         Self {
-//             memory: f.memory as u64,
-//             app_image: f.app_image,
-//             runtime: f.runtime_image,
-//             kernel: f.kernel,
-//         }
-//     }
-// }
+impl From<Function> for crate::sched::message::Function {
+    fn from(f: Function) -> Self {
+        Self {
+            memory: f.memory as u64,
+            app_image: f.app_image,
+            runtime: f.runtime_image,
+            kernel: f.kernel,
+        }
+    }
+}

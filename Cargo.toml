@@ -19,3 +19,12 @@ serde_yaml = "0.9.34"
 tempfile = "3.14.0"
 hex = "0.4.3"
 reqwest = "0.12.9"
+uuid = { version = "1.11.0", features = ["v4"] }
+prost = "0.13.3"
+rouille = "3.6.2"
+crossbeam = "0.8.4"
+r2d2 = "0.8.10"
+serde_with = { version = "3.11.0", features = ["json"] }
+
+[build-dependencies]
+prost-build = "0.13.3"
