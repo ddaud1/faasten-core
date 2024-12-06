@@ -58,6 +58,15 @@ impl From<labeled::buckle::Buckle> for Buckle {
     }
 }
 
+impl Into<labeled::buckle::Buckle> for Buckle {
+    fn into(self) -> labeled::buckle::Buckle {
+        labeled::buckle::Buckle {
+            secrecy: self.secrecy.unwrap().into(),
+            integrity: self.integrity.unwrap().into(),
+        }
+    }
+}
+
 impl From<labeled::buckle::Component> for Component {
     fn from(value: labeled::buckle::Component) -> Self {
         match value {
@@ -74,6 +83,27 @@ impl From<labeled::buckle::Component> for Component {
                     })
                     .collect(),
                 }))},
+        }
+    }
+}
+
+impl Into<labeled::buckle::Component> for Component {
+    fn into(self) -> labeled::buckle::Component {
+        match self.component.unwrap() {
+            component::Component::DcFalse(_) => labeled::buckle::Component::DCFalse,
+            component::Component::Clauses(list) => labeled::buckle::Component::DCFormula(
+                list.clauses
+                    .iter()
+                    .map(|c| {
+                        labeled::buckle::Clause(
+                            c.principals
+                                .iter()
+                                .map(|p| p.tokens.iter().cloned().collect())
+                                .collect(),
+                        )
+                    })
+                    .collect(),
+            ),
         }
     }
 }
